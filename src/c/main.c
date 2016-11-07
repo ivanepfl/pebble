@@ -121,27 +121,27 @@ static void init_window(void) {
 }
 
 static void init_acc(void) {
-  //Define number of samples 25 hz=1sec
+  // Define number of samples 25 hz=1sec
   uint32_t num_samples = 25;
   
-  //Allow Accelerometer Event
+  // Allow Accelerometer Event
   accel_data_service_subscribe(num_samples, accel_data_handler);
   
-  //Define accelerometer sampling rate
+  // Define accelerometer sampling rate
   accel_service_set_sampling_rate(ACCEL_SAMPLING_25HZ);
   
 }
 
-//deinit function init_acc
+// deinit function init_acc
 static void deinit_acc(void) {
-    //stop acc
+    // stop acc
     accel_data_service_unsubscribe();
 }
 
 //Function accel_data_handler
 static void accel_data_handler(AccelData *data, uint32_t num_samples)
 {
-    //Read samples x,y,z
+    // Read samples x,y,z
     int16_t x = data[0].x;
     int16_t y = data[0].y;
     int16_t z = data[0].z;
