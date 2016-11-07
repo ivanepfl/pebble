@@ -10,10 +10,15 @@ Date: 07.11.2016
 
 // Include Pebble library
 #include <pebble.h>
+#include <math.h>
 
-static int gait_count;
-static int gait_speed_per_hour;
+
 static void accel_data_handler(AccelData *data, uint32_t num_samples);
+
+static int countSteps=0;
+static bool ono=1;
+static int count=0;
+static time_t time_stamp;
 
 // Declare the main window and multiple text layers
 Window *main_window;
@@ -29,15 +34,14 @@ static GBitmap *reset_icon;
 
 // Click handler
 void up_single_click_handler(ClickRecognizerRef recognizer, void *context){
-    /*/////////////////////////////////////*/
-    gait_count +=1;
-    /*/////////////////////////////////////*/
+  if(ono)  ono=0;
+  else  ono=1;
 }
 
 void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
-    /*/////////////////////////////////////*/
-    gait_speed_per_hour +=1;
-    /*/////////////////////////////////////*/
+    countSteps = 0 ;
+    time_stamp = time(NULL) ;
+
 }
 
 // single click config:
@@ -67,7 +71,7 @@ static void init_window(void) {
     text_layer_set_text_alignment(gait_count_layer_title, GTextAlignmentLeft);
   
     // Title display
-    static char title_1[60]= "Count [gait]";
+    static char title_1[60]= "Count [steps]";
     text_layer_set_text(gait_count_layer_title, title_1);
   
     // Create text Layer gait count
@@ -85,7 +89,7 @@ static void init_window(void) {
     text_layer_set_text_alignment(gait_speed_layer_title, GTextAlignmentLeft);
   
     // Title display
-    static char title_2[60]= "Speed [g/h]";
+    static char title_2[60]= "Stopwatch";
     text_layer_set_text(gait_speed_layer_title, title_2);
   
     // Create text Layer gait speed
@@ -130,6 +134,8 @@ static void init_acc(void) {
   // Define accelerometer sampling rate
   accel_service_set_sampling_rate(ACCEL_SAMPLING_25HZ);
   
+  // First time stamp
+  time_stamp = time(NULL);
 }
 
 // deinit function init_acc
@@ -141,19 +147,80 @@ static void deinit_acc(void) {
 //Function accel_data_handler
 static void accel_data_handler(AccelData *data, uint32_t num_samples)
 {
-    // Read samples x,y,z
-    int16_t x = data[0].x;
-    int16_t y = data[0].y;
-    int16_t z = data[0].z;
+    
+  int16_t xx=data[1].x;
+  int16_t yy=data[1].y;
+  int16_t zz=data[1].z;
+
+  int16_t px=data[0].x;
+  int16_t py=data[0].y;
+  int16_t pz=data[0].z;
+
+
+
+  double dot[num_samples];
+
+
+  double a=1;
+  double b=1;
+
+
+  int test=0;
+  int i=0;
+  
+  int countPerLoop=0;
+  
+  
+  //Read samples x,y,z
+  for(i=0; i<(int)num_samples;i++)
+  {
+    xx = data[i].x;
+    yy = data[i].y;
+    zz = data[i].z;
+    
+    
+
+    px = data[i+1].x;
+    py = data[i+1].x;
+    pz = data[i+1].x;
+  
+
+
+    dot[i] = fabs(((px * xx) + (py * yy) + (pz * zz))*((px * xx) + (py * yy) + (pz * zz)));
+    a = fabs(px * px + py * py + pz * pz);
+    b = fabs(xx * xx + yy * yy + zz * zz);
+    dot[i] /= (a * b);
+
+    if(dot[i]<0.035 && ono)
+    {
+      
+      test++;
+
+      if(test>=15)
+      {
+
+        countSteps++;
+        countPerLoop++;
+        test=0;
+        
+     
+        
+      }  
+    }
+  }
+    count++;
+    
   
     // Tab of char to print gait result on window
     // Print result Watch
     static char count_table[60];
-    snprintf(count_table, 60, "x: %d", gait_count);
+    snprintf(count_table, 60, "%d", countSteps);
     text_layer_set_text(gait_count_layer, count_table);
   
     static char gait_speed_table[60];
-    snprintf(gait_speed_table, 60, "y: %d", gait_speed_per_hour);
+    // countStep / now - time stamp
+    
+    snprintf(gait_speed_table, 60, "%d", (int)(time(NULL)-time_stamp));
     text_layer_set_text(gait_speed_layer, gait_speed_table);
 }
 
