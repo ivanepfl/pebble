@@ -1,25 +1,10 @@
 
 /*---------------------------------------------------------------------------
-Template for TP of the course "System Engineering" 2016, EPFL
+TP based on template of the course "System Engineering" 2016, EPFL
 
-Authors: Flavien Bardyn & Martin Savary
+Authors: Matthieu Boubat Marc Dumont Ivan Pantelic
 Version: 1.0
-Date: 10.08.2016
-
-Use this "HelloWorld" example as basis to code your own app, which should at least 
-count steps precisely based on accelerometer data. 
-
-- Add the accelerometer data acquisition
-- Implement your own pedometer using these data
-- (Add an estimation of the distance travelled)
-
-- Make an effort on the design of the app, try to do something fun!
-- Comment and indent your code properly!
-- Try to use your imagination and not google (we already did it, and it's disappointing!)
-  to offer us a smart and original solution of pedometer
-
-Don't hesitate to ask us questions.
-Good luck and have fun!
+Date: 07.11.2016
 ---------------------------------------------------------------------------*/
 
 
@@ -28,7 +13,6 @@ Good luck and have fun!
 
 static int gait_count;
 static int gait_speed_per_hour;
-
 static void accel_data_handler(AccelData *data, uint32_t num_samples);
 
 // Declare the main window and multiple text layers
