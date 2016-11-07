@@ -9,7 +9,26 @@
         "messageKeys": [],
         "projectType": "native",
         "resources": {
-            "media": []
+            "media": [
+                {
+                    "file": "images/RESET_ICON",
+                    "name": "RESET_ICON",
+                    "targetPlatforms": [
+                        "aplite"
+                    ],
+                    "type": "bitmap"
+                },
+                {
+                    "file": "images/PAUSE_ICON",
+                    "memoryFormat": "1Bit",
+                    "name": "PAUSE_ICON",
+                    "spaceOptimization": "memory",
+                    "targetPlatforms": [
+                        "aplite"
+                    ],
+                    "type": "bitmap"
+                }
+            ]
         },
         "sdkVersion": "3",
         "targetPlatforms": [
