@@ -31,7 +31,7 @@ static int gait_speed_per_hour;
 
 static void accel_data_handler(AccelData *data, uint32_t num_samples);
 
-// Declare the main window and two text layers
+// Declare the main window and multiple text layers
 Window *main_window;
 TextLayer *background_layer;
 TextLayer *gait_count_layer_title;
@@ -43,10 +43,23 @@ ActionBarLayer *action_bar;
 static GBitmap *pause_icon;
 static GBitmap *reset_icon;
 
-static void click_config_provider_up(void *context) {
+// Click handler
+void up_single_click_handler(ClickRecognizerRef recognizer, void *context){
+    /*/////////////////////////////////////*/
+    gait_count +=1;
+    /*/////////////////////////////////////*/
 }
 
-static void click_config_provider_down(void *context) {
+void down_single_click_handler(ClickRecognizerRef recognizer, void *context) {
+    /*/////////////////////////////////////*/
+    gait_speed_per_hour +=1;
+    /*/////////////////////////////////////*/
+}
+
+// single click config:
+void click_config_provider(Window *window) {
+    window_single_click_subscribe(BUTTON_ID_UP, up_single_click_handler);
+    window_single_click_subscribe(BUTTON_ID_DOWN, down_single_click_handler);
 }
 
 // Init function called when app is launched
@@ -98,10 +111,10 @@ static void init_window(void) {
     text_layer_set_font(gait_speed_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
     text_layer_set_text_alignment(gait_speed_layer, GTextAlignmentCenter);
   
+    // Create action bar on the right
     action_bar = action_bar_layer_create();
-  
     action_bar_layer_set_background_color(action_bar, GColorWhite);
-    // action_bar_layer_set_click_config_provider(action_bar, click_config_provider);
+    action_bar_layer_set_click_config_provider(action_bar, (ClickConfigProvider) click_config_provider);
   
     // Set the icons:
     pause_icon = gbitmap_create_with_resource(RESOURCE_ID_PAUSE_ICON);
@@ -138,31 +151,31 @@ static void init_acc(void) {
 //deinit function init_acc
 static void deinit_acc(void) {
     //stop acc
-   accel_data_service_unsubscribe();
+    accel_data_service_unsubscribe();
 }
 
 //Function accel_data_handler
 static void accel_data_handler(AccelData *data, uint32_t num_samples)
 {
-  //Read samples x,y,z
-  int16_t x = data[0].x;
-  int16_t y = data[0].y;
-  int16_t z = data[0].z;
+    //Read samples x,y,z
+    int16_t x = data[0].x;
+    int16_t y = data[0].y;
+    int16_t z = data[0].z;
   
-  //tab of char to print result on window
-  static char results[60];
+    // Tab of char to print gait result on window
+    // Print result Watch
+    static char count_table[60];
+    snprintf(count_table, 60, "x: %d", gait_count);
+    text_layer_set_text(gait_count_layer, count_table);
   
-  // Print result Watch
-  snprintf(results, 60, "x: %d", x);
-  text_layer_set_text(gait_count_layer, results);
-  snprintf(results, 60, "y: %d", z);
-  text_layer_set_text(gait_speed_layer, results);
+    static char gait_speed_table[60];
+    snprintf(gait_speed_table, 60, "y: %d", gait_speed_per_hour);
+    text_layer_set_text(gait_speed_layer, gait_speed_table);
 }
 
 // deinit function called when the app is closed
 static void deinit_window(void) {
-  
-    // Destroy layers and main window dd 
+    // Destroy layers and main window
     text_layer_destroy(background_layer);
     text_layer_destroy(gait_count_layer_title);
   	text_layer_destroy(gait_count_layer);
