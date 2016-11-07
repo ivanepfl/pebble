@@ -51,76 +51,76 @@ static void click_config_provider_down(void *context) {
 
 // Init function called when app is launched
 static void init_window(void) {
-
-  	// Create main Window element and assign to pointer
-  	main_window = window_create();
+  
+    // Create main Window element and assign to pointer
+    main_window = window_create();
     Layer *window_layer = window_get_root_layer(main_window);  
-
-		// Create background Layer
-		background_layer = text_layer_create(GRect( 0, 0, 144, 168));
   
-		// Setup background layer color (black)
-		text_layer_set_background_color(background_layer, GColorBlack);
+    // Create background Layer
+    background_layer = text_layer_create(GRect( 0, 0, 144, 168));
   
-		// Create text Layer gait count TITLE
-		gait_count_layer_title = text_layer_create(GRect( 10, 20, 100, 25));
-		text_layer_set_background_color(gait_count_layer_title, GColorClear);
-		text_layer_set_text_color(gait_count_layer_title, GColorWhite);	
-		text_layer_set_font(gait_count_layer_title, fonts_get_system_font(FONT_KEY_GOTHIC_18));
-  	text_layer_set_text_alignment(gait_count_layer_title, GTextAlignmentLeft);
+    // Setup background layer color (black)
+    text_layer_set_background_color(background_layer, GColorBlack);
+  
+    // Create text Layer gait count TITLE
+    gait_count_layer_title = text_layer_create(GRect( 10, 20, 100, 25));
+    text_layer_set_background_color(gait_count_layer_title, GColorClear);
+    text_layer_set_text_color(gait_count_layer_title, GColorWhite);	
+    text_layer_set_font(gait_count_layer_title, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+    text_layer_set_text_alignment(gait_count_layer_title, GTextAlignmentLeft);
   
     // Title display
     static char title_1[60]= "Count [gait]";
     text_layer_set_text(gait_count_layer_title, title_1);
   
-		// Create text Layer gait count
-		gait_count_layer = text_layer_create(GRect( 0, 40, 100, 40));
-		text_layer_set_background_color(gait_count_layer, GColorClear);
-		text_layer_set_text_color(gait_count_layer, GColorWhite);	
-		text_layer_set_font(gait_count_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
-  	text_layer_set_text_alignment(gait_count_layer, GTextAlignmentCenter);
+    // Create text Layer gait count
+    gait_count_layer = text_layer_create(GRect( 0, 40, 100, 40));
+    text_layer_set_background_color(gait_count_layer, GColorClear);
+    text_layer_set_text_color(gait_count_layer, GColorWhite);	
+    text_layer_set_font(gait_count_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
+    text_layer_set_text_alignment(gait_count_layer, GTextAlignmentCenter);
   
-  	// Create text Layer gait speed TITLE
-		gait_speed_layer_title = text_layer_create(GRect( 10, 100, 100, 25));
-		text_layer_set_background_color(gait_speed_layer_title, GColorClear);
-		text_layer_set_text_color(gait_speed_layer_title, GColorWhite);	
-		text_layer_set_font(gait_speed_layer_title, fonts_get_system_font(FONT_KEY_GOTHIC_18));
-  	text_layer_set_text_alignment(gait_speed_layer_title, GTextAlignmentLeft);
-
+    // Create text Layer gait speed TITLE
+    gait_speed_layer_title = text_layer_create(GRect( 10, 100, 100, 25));
+    text_layer_set_background_color(gait_speed_layer_title, GColorClear);
+    text_layer_set_text_color(gait_speed_layer_title, GColorWhite);	
+    text_layer_set_font(gait_speed_layer_title, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+    text_layer_set_text_alignment(gait_speed_layer_title, GTextAlignmentLeft);
+  
     // Title display
     static char title_2[60]= "Speed [g/h]";
     text_layer_set_text(gait_speed_layer_title, title_2);
   
-  	// Create text Layer gait speed
-		gait_speed_layer = text_layer_create(GRect( 0, 120, 100, 40));
-		text_layer_set_background_color(gait_speed_layer, GColorClear);
-		text_layer_set_text_color(gait_speed_layer, GColorWhite);	
-		text_layer_set_font(gait_speed_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
-  	text_layer_set_text_alignment(gait_speed_layer, GTextAlignmentCenter);
+    // Create text Layer gait speed
+    gait_speed_layer = text_layer_create(GRect( 0, 120, 100, 40));
+    text_layer_set_background_color(gait_speed_layer, GColorClear);
+    text_layer_set_text_color(gait_speed_layer, GColorWhite);	
+    text_layer_set_font(gait_speed_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
+    text_layer_set_text_alignment(gait_speed_layer, GTextAlignmentCenter);
   
     action_bar = action_bar_layer_create();
   
     action_bar_layer_set_background_color(action_bar, GColorWhite);
     // action_bar_layer_set_click_config_provider(action_bar, click_config_provider);
-
+  
     // Set the icons:
     pause_icon = gbitmap_create_with_resource(RESOURCE_ID_PAUSE_ICON);
     reset_icon = gbitmap_create_with_resource(RESOURCE_ID_RESET_ICON);
     action_bar_layer_set_icon_animated(action_bar, BUTTON_ID_UP, pause_icon, true);
     action_bar_layer_set_icon_animated(action_bar, BUTTON_ID_DOWN, reset_icon, true);
-    
   
-  	// Add layers as childs layers to the Window's root layer
+  
+    // Add layers as childs layers to the Window's root layer
     layer_add_child(window_layer, text_layer_get_layer(background_layer));
-	  layer_add_child(window_layer, text_layer_get_layer(gait_count_layer_title));    
+    layer_add_child(window_layer, text_layer_get_layer(gait_count_layer_title));    
     layer_add_child(window_layer, text_layer_get_layer(gait_count_layer));
-  	layer_add_child(window_layer, text_layer_get_layer(gait_speed_layer_title));
-  	layer_add_child(window_layer, text_layer_get_layer(gait_speed_layer));
+    layer_add_child(window_layer, text_layer_get_layer(gait_speed_layer_title));
+    layer_add_child(window_layer, text_layer_get_layer(gait_speed_layer));
     action_bar_layer_add_to_window(action_bar, main_window);
   
-  	// Show the window on the watch, with animated = true
-  	window_stack_push(main_window, true);
-    
+    // Show the window on the watch, with animated = true
+    window_stack_push(main_window, true);
+  
 }
 
 static void init_acc(void) {
